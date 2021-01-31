@@ -2,4 +2,7 @@
     <string name="app_name">TinkoffFinteh</string>
     <string name="back">Назад</string>
     <string name="forward">Вперед</string>
+    <string name="latest">последние</string>
+    <string name="hot">горячие</string>
+    <string name="top">лучшие</string>
 </resources>
