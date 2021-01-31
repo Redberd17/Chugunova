@@ -36,6 +36,7 @@ class MainPageFragment : Fragment() {
     lateinit var savedPosts: ArrayList<SavedPosts>
     lateinit var url: String
     var mCurrentItem: Int = 0
+    lateinit var mError: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +65,7 @@ class MainPageFragment : Fragment() {
         mBack = view.findViewById(R.id.back)
         mDescription = view.findViewById(R.id.description)
         mProgressBar = view.findViewById(R.id.progress)
+        mError = view.findViewById(R.id.error)
 
         mForward.setOnClickListener { forwardPressed() }
         mBack.setOnClickListener { backPressed() }
@@ -82,7 +84,10 @@ class MainPageFragment : Fragment() {
     }
 
     private fun forwardPressed() {
-        mBack.visibility = View.VISIBLE
+        mDescription.text = ""
+        if (savedPosts.size != 0) {
+            mBack.visibility = View.VISIBLE
+        }
         if (mCurrentItem < savedPosts.size - 1) {
             mCurrentItem++
             setImageAndDescription()
@@ -94,6 +99,7 @@ class MainPageFragment : Fragment() {
     }
 
     private fun backPressed() {
+        mDescription.text = ""
         if (mCurrentItem > 0) {
             mCurrentItem--
         }
@@ -106,11 +112,15 @@ class MainPageFragment : Fragment() {
     }
 
     private fun setImageAndDescription() {
-        Glide.with(this)
-            .asGif()
-            .load(savedPosts[mCurrentItem].url)
-            .into(mImageView)
-        mDescription.text = savedPosts[mCurrentItem].description
+        mError.visibility = View.GONE
+        mImageView.visibility = View.VISIBLE
+        if (savedPosts.size != 0) {
+            Glide.with(this)
+                .asGif()
+                .load(savedPosts[mCurrentItem].url)
+                .into(mImageView)
+            mDescription.text = savedPosts[mCurrentItem].description
+        }
     }
 
     private fun downloadImage() {
@@ -121,7 +131,7 @@ class MainPageFragment : Fragment() {
                 mPosts = result
                 val randomPost = getRandomPost()
                 val description: String = mPosts.result[randomPost].description
-                mDescription.text = description
+
                 url = mPosts.result[randomPost].gifURL
                 val test = SavedPosts(url, description)
                 savedPosts.add(test)
@@ -137,6 +147,7 @@ class MainPageFragment : Fragment() {
                             isFirstResource: Boolean
                         ): Boolean {
                             mProgressBar.visibility = View.GONE
+                            mError.visibility = View.VISIBLE
                             return false
                         }
 
@@ -147,13 +158,17 @@ class MainPageFragment : Fragment() {
                             dataSource: DataSource?,
                             isFirstResource: Boolean
                         ): Boolean {
+                            mError.visibility = View.GONE
                             mProgressBar.visibility = View.GONE
                             mImageView.visibility = View.VISIBLE
+                            mDescription.text = description
                             return false
                         }
                     })
                     .into(mImageView)
             }, { error ->
+                mProgressBar.visibility = View.GONE
+                mError.visibility = View.VISIBLE
                 error.printStackTrace()
             })
     }

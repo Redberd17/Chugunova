@@ -20,11 +20,20 @@
         android:scaleType="centerCrop"
         android:visibility="gone" />
 
+    <ImageView
+        android:id="@+id/error"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        android:src="@drawable/netak" />
+
     <TextView
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textColor="@android:color/black"
         android:layout_marginTop="5dp"
         android:textAlignment="center"
@@ -42,7 +51,7 @@
             android:layout_marginTop="25dp"
             android:background="@android:color/holo_green_light"
             android:focusable="true"
-            android:text="Назад"
+            android:text="@string/back"
             android:visibility="gone" />
 
         <Button
@@ -53,7 +62,7 @@
             android:layout_marginTop="25dp"
             android:background="@android:color/holo_green_light"
             android:focusable="true"
-            android:text="Вперед" />
+            android:text="@string/forward" />
     </LinearLayout>
 
 </LinearLayout>
