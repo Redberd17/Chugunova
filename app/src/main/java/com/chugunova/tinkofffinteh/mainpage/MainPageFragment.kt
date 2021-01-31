@@ -41,6 +41,7 @@ class MainPageFragment : Fragment() {
     private lateinit var mLatest: Button
     private lateinit var mTop: Button
     private lateinit var mHot: Button
+    private var isError: Boolean = false
 
     private enum class Section(val section: String) {
         Latest("latest"),
@@ -117,6 +118,13 @@ class MainPageFragment : Fragment() {
     }
 
     private fun backPressed() {
+        if (isError) {
+            mError.visibility = View.GONE
+            mImageView.visibility = View.VISIBLE
+            isError = false
+            return
+        }
+
         mDescription.text = ""
         if (mCurrentItem > 0) {
             mCurrentItem--
@@ -165,6 +173,7 @@ class MainPageFragment : Fragment() {
                             target: Target<Drawable?>?,
                             isFirstResource: Boolean
                         ): Boolean {
+                            isError = true
                             mProgressBar.visibility = View.GONE
                             mError.visibility = View.VISIBLE
                             return false
@@ -177,6 +186,7 @@ class MainPageFragment : Fragment() {
                             dataSource: DataSource?,
                             isFirstResource: Boolean
                         ): Boolean {
+                            isError = false
                             mError.visibility = View.GONE
                             mProgressBar.visibility = View.GONE
                             mImageView.visibility = View.VISIBLE
@@ -186,6 +196,7 @@ class MainPageFragment : Fragment() {
                     })
                     .into(mImageView)
             }, { error ->
+                isError = true
                 mProgressBar.visibility = View.GONE
                 mError.visibility = View.VISIBLE
                 error.printStackTrace()
