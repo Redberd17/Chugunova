@@ -101,10 +101,10 @@ class MainPageFragment : Fragment() {
     }
 
     private fun forwardPressed() {
+        disableButtons()
         mDescription.text = ""
         if (savedPosts.size != 0) {
             mBack.background = activity?.let { ContextCompat.getDrawable(it, R.color.colorGreen) }
-            mBack.isClickable = true
         }
         if (mCurrentItem < savedPosts.size - 1) {
             mCurrentItem++
@@ -137,6 +137,7 @@ class MainPageFragment : Fragment() {
     }
 
     private fun setImageAndDescription() {
+        enableButtons()
         mProgressBar.visibility = View.GONE
         mError.visibility = View.GONE
         mImageView.visibility = View.VISIBLE
@@ -173,6 +174,7 @@ class MainPageFragment : Fragment() {
                             target: Target<Drawable?>?,
                             isFirstResource: Boolean
                         ): Boolean {
+                            enableButtons()
                             isError = true
                             mProgressBar.visibility = View.GONE
                             mError.visibility = View.VISIBLE
@@ -186,6 +188,7 @@ class MainPageFragment : Fragment() {
                             dataSource: DataSource?,
                             isFirstResource: Boolean
                         ): Boolean {
+                            enableButtons()
                             isError = false
                             mError.visibility = View.GONE
                             mProgressBar.visibility = View.GONE
@@ -196,6 +199,7 @@ class MainPageFragment : Fragment() {
                     })
                     .into(mImageView)
             }, { error ->
+                enableButtons()
                 isError = true
                 mProgressBar.visibility = View.GONE
                 mError.visibility = View.VISIBLE
@@ -222,5 +226,15 @@ class MainPageFragment : Fragment() {
         mLatest.background = activity?.let { ContextCompat.getDrawable(it, R.color.colorGray) }
         mTop.background = activity?.let { ContextCompat.getDrawable(it, R.color.colorGray) }
         mHot.background = activity?.let { ContextCompat.getDrawable(it, R.color.colorGreen) }
+    }
+
+    private fun disableButtons() {
+        mBack.isClickable = false
+        mForward.isClickable = false
+    }
+
+    private fun enableButtons() {
+        mBack.isClickable = true
+        mForward.isClickable = true
     }
 }
