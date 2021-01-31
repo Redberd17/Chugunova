@@ -85,10 +85,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:background="@android:color/holo_green_light"
+            android:background="@android:color/darker_gray"
             android:focusable="true"
-            android:text="@string/back"
-            android:visibility="gone" />
+            android:text="@string/back" />
 
         <Button
             android:id="@+id/forward"

@@ -27,22 +27,22 @@ class MainPageFragment : Fragment() {
     private lateinit var mImageView: ImageView
     private lateinit var mView: View
     private lateinit var mForward: Button
-    lateinit var mBack: Button
+    private lateinit var mBack: Button
     private lateinit var mDescription: TextView
-    lateinit var mPosts: Result
-    lateinit var mUserApi: UserAPI
-    lateinit var mRepository: PostRepository
-    lateinit var mProgressBar: ProgressBar
-    lateinit var savedPosts: ArrayList<SavedPosts>
-    lateinit var url: String
-    var mCurrentItem: Int = 0
-    lateinit var mError: ImageView
-    lateinit var mSection: String
-    lateinit var mLatest: Button
-    lateinit var mTop: Button
-    lateinit var mHot: Button
+    private lateinit var mPosts: Result
+    private lateinit var mUserApi: UserAPI
+    private lateinit var mRepository: PostRepository
+    private lateinit var mProgressBar: ProgressBar
+    private lateinit var savedPosts: ArrayList<SavedPosts>
+    private lateinit var url: String
+    private var mCurrentItem: Int = 0
+    private lateinit var mError: ImageView
+    private lateinit var mSection: String
+    private lateinit var mLatest: Button
+    private lateinit var mTop: Button
+    private lateinit var mHot: Button
 
-    enum class Section(val section: String) {
+    private enum class Section(val section: String) {
         Latest("latest"),
         Top("top"),
         Hot("hot")
@@ -84,13 +84,11 @@ class MainPageFragment : Fragment() {
         mForward.setOnClickListener { forwardPressed() }
         mBack.setOnClickListener { backPressed() }
 
+        mBack.isClickable = false
+
         mLatest.setOnClickListener { selectedLatest() }
         mTop.setOnClickListener { selectedTop() }
         mHot.setOnClickListener { selectedHot() }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     private fun getRandomPage(): Int {
@@ -104,7 +102,8 @@ class MainPageFragment : Fragment() {
     private fun forwardPressed() {
         mDescription.text = ""
         if (savedPosts.size != 0) {
-            mBack.visibility = View.VISIBLE
+            mBack.background = activity?.let { ContextCompat.getDrawable(it, R.color.colorGreen) }
+            mBack.isClickable = true
         }
         if (mCurrentItem < savedPosts.size - 1) {
             mCurrentItem++
@@ -122,11 +121,10 @@ class MainPageFragment : Fragment() {
         if (mCurrentItem > 0) {
             mCurrentItem--
         }
-
         if (mCurrentItem == 0) {
-            mBack.visibility = View.GONE
+            mBack.background = activity?.let { ContextCompat.getDrawable(it, R.color.colorGray) }
+            mBack.isClickable = false
         }
-
         setImageAndDescription()
     }
 
@@ -160,6 +158,7 @@ class MainPageFragment : Fragment() {
                     .load(url)
                     .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                     .listener(object : RequestListener<Drawable?> {
+
                         override fun onLoadFailed(
                             e: GlideException?,
                             model: Any?,
@@ -192,7 +191,6 @@ class MainPageFragment : Fragment() {
                 error.printStackTrace()
             })
     }
-
 
     private fun selectedLatest() {
         mSection = Section.Latest.section
