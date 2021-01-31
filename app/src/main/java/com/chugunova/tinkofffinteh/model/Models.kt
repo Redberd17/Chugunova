@@ -23,3 +23,5 @@ data class Post(
 )
 
 data class Result(val result: List<Post>, val totalCount: Int)
+
+data class SavedPosts(val url: String, val description: String)

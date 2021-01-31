@@ -6,12 +6,19 @@
     android:padding="16dp"
     android:orientation="vertical">
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:visibility="visible" />
+
     <ImageView
         android:id="@+id/glide"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/description"
@@ -35,7 +42,8 @@
             android:layout_marginTop="25dp"
             android:background="@android:color/holo_green_light"
             android:focusable="true"
-            android:text="Назад" />
+            android:text="Назад"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/forward"
